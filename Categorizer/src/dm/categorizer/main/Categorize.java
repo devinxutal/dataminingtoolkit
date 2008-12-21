@@ -57,12 +57,15 @@ public class Categorize {
 		System.out.println("\n==========Detailed Accuracy By Class=========\n");
 		PrintUtil.print("Precision", space1);
 		PrintUtil.print("Recall", space1);
+		PrintUtil.print("F-Measure", space1);
 		System.out.println("Class");
 		double[] precision = eval.getPrecision();
 		double[] recall = eval.getRecall();
+		double[] fmeasure = eval.getFMeasure();
 		for (int i = 0; i < testset.getClazzCount(); i++) {
 			PrintUtil.print(precision[i], 5, space1);
 			PrintUtil.print(recall[i], 5, space1);
+			PrintUtil.print(fmeasure[i], 5, space1);
 			System.out.println(testset.getClazzByKey(i));
 		}
 
