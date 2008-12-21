@@ -17,7 +17,7 @@ public class Evaluator {
 
 	private double[] recall;
 
-	private double[] fmesure;
+	private double[] fmeasure;
 
 	private double[] tprate;
 
@@ -69,7 +69,7 @@ public class Evaluator {
 
 	public double[] getFMeasure() {
 		check();
-		return this.fmesure;
+		return this.fmeasure;
 	}
 
 	public double[] getTPRate() {
@@ -97,6 +97,9 @@ public class Evaluator {
 	private void calculateOthers() {
 		precision = new double[instances.getClazzCount()];
 		recall = new double[instances.getClazzCount()];
+		fmeasure = new double[instances.getClazzCount()];
+		tprate = new double[instances.getClazzCount()];
+		fprate = new double[instances.getClazzCount()];
 		// a | b
 		// ---|---
 		// c | d
@@ -111,6 +114,8 @@ public class Evaluator {
 			c -= a;
 			precision[i] = a / (double) (a + c);
 			recall[i] = a / (double) (a + b);
+			fmeasure[i] = (2 * a) / (double) (2 * a + b + c);
+			 
 		}
 	}
 
@@ -125,7 +130,6 @@ public class Evaluator {
 					correct++;
 				else
 					incorrect++;
-
 				confusionMatrix[i.target][i.clazz]++;
 			}
 		}
