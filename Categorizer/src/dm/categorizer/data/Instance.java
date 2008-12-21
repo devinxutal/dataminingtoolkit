@@ -1,7 +1,7 @@
 package dm.categorizer.data;
 
 public class Instance {
-	public Object clazz;
-	public Object target;
+	public int clazz = -1;
+	public int target = -1;
 	public int[] attributes;
 }
