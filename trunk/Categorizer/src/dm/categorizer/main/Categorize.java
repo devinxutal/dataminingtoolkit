@@ -7,6 +7,7 @@ import dm.categorizer.algorithm.NaiveBayesCategorizer;
 import dm.categorizer.data.Instances;
 import dm.categorizer.evaluate.Evaluator;
 import dm.categorizer.io.DatasetReader;
+import dm.categorizer.util.PrintUtil;
 
 public class Categorize {
 	public static void main(String args[]) {
@@ -44,12 +45,41 @@ public class Categorize {
 
 	private static void evaluate(Instances testset) {
 		Evaluator eval = new Evaluator(testset);
-		System.out.println("===============Confusion Matrix==============");
+		int space1 = 10, space2 = 3;
+		System.out.println("\n===================Summary===================\n");
+		System.out.println("Total Instances:\t" + eval.getTotalNum());
+		System.out.println("Correctly Classified Instances:\t"
+				+ eval.getCorrectlyClassifiedNum());
+		System.out.println("InCorrectly Classified Instances:\t"
+				+ eval.getIncorrectlyClassifiedNum());
+		System.out.println("Accuracy:\t" + eval.getAccuracy());
+
+		System.out.println("\n==========Detailed Accuracy By Class=========\n");
+		PrintUtil.print("Precision", space1);
+		PrintUtil.print("Recall", space1);
+		System.out.println("Class");
+		double[] precision = eval.getPrecision();
+		double[] recall = eval.getRecall();
+		for (int i = 0; i < testset.getClazzCount(); i++) {
+			PrintUtil.print(precision[i], 5, space1);
+			PrintUtil.print(recall[i], 5, space1);
+			System.out.println(testset.getClazzByKey(i));
+		}
+
+		System.out.println("\n===============Confusion Matrix==============\n");
+		for (int i = 0; i < testset.getClazzCount(); i++) {
+			PrintUtil.print("" + (char) ('a' + i), space2);
+		}
+		System.out.println("<-- classified as");
+		int no = 0;
 		for (int[] line : eval.getConfusionMatrix()) {
 			for (int d : line) {
-				System.out.print(d + "\t");
+				PrintUtil.print(d, space2);
 			}
-			System.out.println("");
+			PrintUtil.print("|", 2);
+			System.out.println("" + ((char) ('a' + no)) + " = "
+					+ testset.getClazzByKey(no));
+			no++;
 		}
 	}
 
