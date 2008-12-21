@@ -45,8 +45,8 @@ public class Categorize {
 	private static void evaluate(Instances testset) {
 		Evaluator eval = new Evaluator(testset);
 		System.out.println("===============Confusion Matrix==============");
-		for (double[] line : eval.getConfusionMatrix()) {
-			for (double d : line) {
+		for (int[] line : eval.getConfusionMatrix()) {
+			for (int d : line) {
 				System.out.print(d + "\t");
 			}
 			System.out.println("");

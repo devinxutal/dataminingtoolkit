@@ -8,7 +8,7 @@ public class Evaluator {
 
 	private boolean evaluated = false;
 
-	private double[][] confusionMatrix;
+	private int[][] confusionMatrix;
 	private int total;
 	private int correct;
 	private int incorrect;
@@ -42,7 +42,7 @@ public class Evaluator {
 		return correct / (double) total;
 	}
 
-	public double[][] getConfusionMatrix() {
+	public int[][] getConfusionMatrix() {
 		check();
 		return this.confusionMatrix;
 	}
@@ -60,7 +60,7 @@ public class Evaluator {
 
 	private void calculateConfusionMatrix() {
 		incorrect = correct = 0;
-		confusionMatrix = new double[instances.getClazzCount()][instances
+		confusionMatrix = new int[instances.getClazzCount()][instances
 				.getClazzCount()];
 		total = instances.getInstances().size();
 		for (Instance i : instances.getInstances()) {
