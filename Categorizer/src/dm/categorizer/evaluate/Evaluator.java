@@ -13,6 +13,16 @@ public class Evaluator {
 	private int correct;
 	private int incorrect;
 
+	private double[] precision;
+
+	private double[] recall;
+
+	private double[] fmesure;
+
+	private double[] tprate;
+
+	private double[] fprate;;
+
 	public Evaluator(Instances result) {
 		this.instances = result;
 	}
@@ -47,6 +57,31 @@ public class Evaluator {
 		return this.confusionMatrix;
 	}
 
+	public double[] getPrecision() {
+		check();
+		return this.precision;
+	}
+
+	public double[] getRecall() {
+		check();
+		return this.recall;
+	}
+
+	public double[] getFMeasure() {
+		check();
+		return this.fmesure;
+	}
+
+	public double[] getTPRate() {
+		check();
+		return this.tprate;
+	}
+
+	public double[] getFPRate() {
+		check();
+		return this.fprate;
+	}
+
 	private void check() {
 		if (!evaluated) {
 			evaluate();
@@ -56,6 +91,27 @@ public class Evaluator {
 
 	private void evaluate() {
 		calculateConfusionMatrix();
+		calculateOthers();
+	}
+
+	private void calculateOthers() {
+		precision = new double[instances.getClazzCount()];
+		recall = new double[instances.getClazzCount()];
+		// a | b
+		// ---|---
+		// c | d
+		for (int i = 0; i < instances.getClazzCount(); i++) {
+			int a = confusionMatrix[i][i];
+			int b = 0, c = 0;
+			for (int j = 0; j < instances.getClazzCount(); j++) {
+				b += confusionMatrix[i][j];
+				c += confusionMatrix[j][i];
+			}
+			b -= a;
+			c -= a;
+			precision[i] = a / (double) (a + c);
+			recall[i] = a / (double) (a + b);
+		}
 	}
 
 	private void calculateConfusionMatrix() {

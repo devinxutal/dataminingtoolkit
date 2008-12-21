@@ -17,7 +17,7 @@ public class NaiveBayesCategorizer implements Categorizer {
 			int clazz_max = 0;
 			double p_max = 0;
 			for (int clazz = 0; clazz < testset.getClazzCount(); clazz++) {
-				double p = calculate_p( i, clazz);
+				double p = calculate_p(i, clazz);
 				if (p_max < p) {
 					p_max = p;
 					clazz_max = clazz;
@@ -31,11 +31,10 @@ public class NaiveBayesCategorizer implements Categorizer {
 		double p = p_clazz[clazz];
 		for (int i = 0; i < ins.attributes.length; i++) {
 			int value = ins.attributes[i];
-			if(value <0){
+			if (value < 0) {
 				value = 0;
 			}
-			p = ((Map<Integer, Double>) (p_attribute[clazz][i]))
-					.get(value);
+			p = p*((Map<Integer, Double>) (p_attribute[clazz][i])).get(value);
 		}
 		return p;
 	}
@@ -85,7 +84,7 @@ public class NaiveBayesCategorizer implements Categorizer {
 		}
 		// calculate p
 		double pp = 0.005;
-		int m = 5;
+		double m = 0.001;
 		for (int i = 0; i < trainset.getClazzCount(); i++) {
 			p_clazz[i] = instances_per_class[i] / (double) total;
 			for (int j = 0; j < trainset.getAttrCount(); j++) {
@@ -95,6 +94,23 @@ public class NaiveBayesCategorizer implements Categorizer {
 					double total_instance = (double) instances_per_class[i];
 					double p = (occurance + m * pp) / (total_instance + m);
 					p_attribute[i][j].put(val, p);
+				}
+			}
+		}
+		print_p();
+	}
+
+	private void print_p() {
+		System.err.println("============p class===========");
+		for (int i = 0; i < p_clazz.length; i++) {
+			System.err.println("P(clazz[" + i + "]) = " + p_clazz[i]);
+		}
+		for (int i = 0; i < p_clazz.length; i++) {
+			for (int j = 0; j < p_attribute[0].length; j++) {
+				for (Map.Entry<Integer, Double> ent : ((Map<Integer, Double>) p_attribute[i][j])
+						.entrySet()) {
+					System.err.println("P(A_" + j + "_" + ent.getKey()
+							+ "|class[" + i + "]) = " + ent.getValue());
 				}
 			}
 		}
