@@ -1,13 +1,16 @@
 package dm.categorizer.io;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import dm.categorizer.data.Instance;
 import dm.categorizer.data.Instances;
@@ -17,9 +20,9 @@ public class DatasetReader {
 
 	}
 
-	public Instances getInstances(String path) {
+	public Instances getInstances(File file) {
 		BufferedReader in = null;
-		if ((in = getInputer(path)) == null) {
+		if ((in = getInputer(file)) == null) {
 			return null;
 		}
 		Instances instances = new Instances();
@@ -29,9 +32,9 @@ public class DatasetReader {
 		return instances;
 	}
 
-	private BufferedReader getInputer(String path) {
+	private BufferedReader getInputer(File file) {
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(path));
+			BufferedReader in = new BufferedReader(new FileReader(file));
 			return in;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -58,7 +61,7 @@ public class DatasetReader {
 			Instance ins;
 			// start reading instances;
 			while ((line = in.readLine()) != null) {
-				if ((ins = parseInstance(line.trim())) != null) {
+				if ((ins = parseInstance(instances, line.trim())) != null) {
 					list.add(ins);
 				}
 			}
@@ -68,12 +71,12 @@ public class DatasetReader {
 		}
 	}
 
-	private Instance parseInstance(String line) {
+	private Instance parseInstance(Instances instances, String line) {
 		String[] attributes = line.split(",");
 		if (attributes.length != 36)
 			return null;
 		Instance ins = new Instance();
-		ins.target = attributes[0];
+		ins.target = instances.getKeyByClazz(attributes[0]);
 		int[] attr = new int[attributes.length - 1];
 		for (int i = 0; i < attr.length; i++) {
 			String at = attributes[i + 1];
@@ -101,14 +104,15 @@ public class DatasetReader {
 				;
 			// find the substring surrounded by {}
 			line = line.substring(line.indexOf('{') + 1, line.indexOf('}'));
-			Set<Object> clazzTypes = new HashSet<Object>();
+			Map<Object, Integer> clazzKeyMap = new TreeMap<Object, Integer>();
+			int key = 0;
 			for (String type : line.split(",")) {
 				String tp = type.trim();
 				if (tp.length() > 0) {
-					clazzTypes.add(tp);
+					clazzKeyMap.put(tp, key++);
 				}
 			}
-			instances.setClazzTypes(clazzTypes);
+			instances.setClazzKeyMap(clazzKeyMap);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
