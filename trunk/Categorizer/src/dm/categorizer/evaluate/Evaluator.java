@@ -115,7 +115,7 @@ public class Evaluator {
 			precision[i] = a / (double) (a + c);
 			recall[i] = a / (double) (a + b);
 			fmeasure[i] = (2 * a) / (double) (2 * a + b + c);
-			 
+
 		}
 	}
 
