@@ -7,25 +7,31 @@ import dm.categorizer.algorithm.NaiveBayesCategorizer;
 import dm.categorizer.data.Instances;
 import dm.categorizer.evaluate.Evaluator;
 import dm.categorizer.io.DatasetReader;
+import dm.categorizer.ui.CategorizerFrame;
 import dm.categorizer.util.PrintUtil;
 
 public class Categorize {
 	public static void main(String args[]) {
-		if (args.length != 2) {
-			printUsage();
-			System.exit(0);
+		if (args.length == 0) { // use ui
+			CategorizerFrame frame = new CategorizerFrame();
+			frame.setVisible(true);
+		} else {
+			if (args.length != 2) {
+				printUsage();
+				System.exit(0);
+			}
+			File trainFile = new File(args[0]);
+			File testFile = new File(args[1]);
+			if (!(trainFile.exists()) || trainFile.isDirectory()) {
+				System.out.println("Error occured: train file dosen't exist.");
+				System.exit(0);
+			}
+			if (!(testFile.exists()) || trainFile.isDirectory()) {
+				System.out.println("Error occured: test file dosen't exist.");
+				System.exit(0);
+			}
+			process(trainFile, testFile);
 		}
-		File trainFile = new File(args[0]);
-		File testFile = new File(args[1]);
-		if (!(trainFile.exists()) || trainFile.isDirectory()) {
-			System.out.println("Error occured: train file dosen't exist.");
-			System.exit(0);
-		}
-		if (!(testFile.exists()) || trainFile.isDirectory()) {
-			System.out.println("Error occured: test file dosen't exist.");
-			System.exit(0);
-		}
-		process(trainFile, testFile);
 	}
 
 	private static void process(File train, File test) {

@@ -246,11 +246,6 @@ public class CategorizerFrame extends JFrame {
 		}
 	}
 
-	public static void main(String args[]) {
-		CategorizerFrame frame = new CategorizerFrame();
-		frame.setVisible(true);
-	}
-
 	StringBuffer sb = new StringBuffer();
 
 	private void print(String content) {
