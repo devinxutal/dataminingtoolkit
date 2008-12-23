@@ -50,7 +50,7 @@ public class Categorize {
 		System.out.println("Total Instances:\t" + eval.getTotalNum());
 		System.out.println("Correctly Classified Instances:\t"
 				+ eval.getCorrectlyClassifiedNum());
-		System.out.println("InCorrectly Classified Instances:\t"
+		System.out.println("Incorrectly Classified Instances:\t"
 				+ eval.getIncorrectlyClassifiedNum());
 		System.out.println("Accuracy:\t" + eval.getAccuracy());
 
