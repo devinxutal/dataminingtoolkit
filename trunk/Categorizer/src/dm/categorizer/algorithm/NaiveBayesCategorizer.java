@@ -97,22 +97,6 @@ public class NaiveBayesCategorizer implements Categorizer {
 				}
 			}
 		}
-		print_p();
 	}
 
-	private void print_p() {
-		System.err.println("============p class===========");
-		for (int i = 0; i < p_clazz.length; i++) {
-			System.err.println("P(clazz[" + i + "]) = " + p_clazz[i]);
-		}
-		for (int i = 0; i < p_clazz.length; i++) {
-			for (int j = 0; j < p_attribute[0].length; j++) {
-				for (Map.Entry<Integer, Double> ent : ((Map<Integer, Double>) p_attribute[i][j])
-						.entrySet()) {
-					System.err.println("P(A_" + j + "_" + ent.getKey()
-							+ "|class[" + i + "]) = " + ent.getValue());
-				}
-			}
-		}
-	}
 }
