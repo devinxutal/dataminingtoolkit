@@ -17,7 +17,7 @@ public class NaiveBayesCategorizer implements Categorizer {
 			int clazz_max = 0;
 			double p_max = 0;
 			for (int clazz = 0; clazz < testset.getClazzCount(); clazz++) {
-				double p = calculate_p(i, clazz);
+				double p = calculate_p(testset, i, clazz);
 				if (p_max < p) {
 					p_max = p;
 					clazz_max = clazz;
@@ -27,14 +27,17 @@ public class NaiveBayesCategorizer implements Categorizer {
 		}
 	}
 
-	private double calculate_p(Instance ins, int clazz) {
+	private double calculate_p(Instances set, Instance ins, int clazz) {
 		double p = p_clazz[clazz];
 		for (int i = 0; i < ins.attributes.length; i++) {
 			int value = ins.attributes[i];
+			double pp = 0;
 			if (value < 0) {
 				value = 0;
 			}
-			p = p*((Map<Integer, Double>) (p_attribute[clazz][i])).get(value);
+
+			pp = ((Map<Integer, Double>) (p_attribute[clazz][i])).get(value);
+			p = p * pp;
 		}
 		return p;
 	}
@@ -83,7 +86,7 @@ public class NaiveBayesCategorizer implements Categorizer {
 			}
 		}
 		// calculate p
-		double pp = 0.005;
+		double pp = 0.05;
 		double m = 0.001;
 		for (int i = 0; i < trainset.getClazzCount(); i++) {
 			p_clazz[i] = instances_per_class[i] / (double) total;
